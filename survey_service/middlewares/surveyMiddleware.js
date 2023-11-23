@@ -8,6 +8,8 @@ const validateToken = async (req, res, next) => {
         const response = await axios.post("http://localhost:3001/api/v1/auth/validateToken", { token: token });
         if(!response.data.success) return res.status(401).json({ success: false, msg: "Unauthorized" });
         req.userId = response.data.userId;
+        req.ecn = response.data.ecn
+        console.log(req.ecn)
         next();
     } catch (error) { 
         res.status(500).json({ success: false, msg: "Internal server error" });

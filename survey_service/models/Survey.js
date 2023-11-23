@@ -24,9 +24,13 @@ const SurveySchema = new Schema({
         type: Number, 
         required: true
     }, 
-    aswersPerson1: {  
+    answersPerson1: {  
         type: Object,
         default: {}  
+    },
+    ecn: {
+        type: String,
+        required: true
     },
     responsesOtherPerson: [ PersonSchema ]
 });

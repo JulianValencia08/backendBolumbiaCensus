@@ -54,8 +54,10 @@ const validateTokenController = async (req, res) => {
     const token = req.body.token;
     const { isValidToken, verification } = verifyJwt(token);
     const userId = verification.sub;
+    const ecn = verification.ecn;
+    console.log(verification)
     if(!isValidToken) res.status(401).json({ success: false, message: "Invalid Token" });
-    res.status(200).json({ success: true, message: "Valid Token", userId });
+    res.status(200).json({ success: true, message: "Valid Token", userId, ecn});
  } 
 
 

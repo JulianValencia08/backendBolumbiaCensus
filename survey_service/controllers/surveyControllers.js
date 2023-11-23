@@ -2,12 +2,16 @@ const { Survey } =  require("../models/Survey");
 
 const firstPersonAnswersController = async (req, res, next) => { 
     const userId = req.userId;
-    const { houseHoldSize, firstResponses } = req.body;
+    const { houseHoldSize, firstResponses, } = req.body;
+    const ecn = req.ecn;
+    
     const newSurvey = new Survey({ 
         userId: userId, // Poner el ID del usuario que se obtiene del token
         houseHoldSize: houseHoldSize,
-        aswersPerson1: firstResponses,
+        answersPerson1: firstResponses,
+        ecn: ecn
     });
+    console.log(newSurvey)
     newSurvey.save()
         .then((survey) => {
             res.json({  success: true, survey: survey, message: "First person questions" });
@@ -34,7 +38,22 @@ const otherPersonAnswersController = async (req, res, next) => {
         }).catch((err) => {
             console.error(err);
             res.status(500).json({ success: false, msg: "Internal server error" });
-        }); 
+        });     
 } 
 
-module.exports = { firstPersonAnswersController, otherPersonAnswersController };
+const formInformation = async (req,res,next) => {
+    const ecn = req.body.ecn;
+    Survey.findOne({ecn: ecn})
+        .then((surveys) => {
+            console.log(surveys);
+            let answersPerson1 = surveys.answersPerson1
+            let responsesOtherPerson = surveys.responsesOtherPerson
+            let response = {
+               answersPerson1,
+               responsesOtherPerson
+            }
+            res.status(200).send(response);
+        })
+}
+
+module.exports = { formInformation ,firstPersonAnswersController, otherPersonAnswersController };
