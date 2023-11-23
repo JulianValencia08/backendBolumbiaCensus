@@ -50,11 +50,12 @@ const loginController = async (req, res, next) => {
         });
 };  
 
-
 const validateTokenController = async (req, res) => {
-    const isValidToken = verifyJwt(req.headers.jwt)
+    const token = req.body.token;
+    const { isValidToken, verification } = verifyJwt(token);
+    const userId = verification.sub;
     if(!isValidToken) res.status(401).json({ success: false, message: "Invalid Token" });
-    res.status(200).json({ success: true, message: "Valid Token" });
+    res.status(200).json({ success: true, message: "Valid Token", userId });
  } 
 
 
