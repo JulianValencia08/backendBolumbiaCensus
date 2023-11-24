@@ -5,13 +5,17 @@ const firstPersonAnswersController = async (req, res, next) => {
     const { houseHoldSize, firstResponses, } = req.body;
     const ecn = req.ecn;
     
+    console.log("Body", req.body);
+    console.log("userId", userId);
+    console.log("ecn", ecn);
+
     const newSurvey = new Survey({ 
         userId: userId, // Poner el ID del usuario que se obtiene del token
         houseHoldSize: houseHoldSize,
         answersPerson1: firstResponses,
         ecn: ecn
     });
-    console.log(newSurvey)
+
     newSurvey.save()
         .then((survey) => {
             res.json({  success: true, survey: survey, message: "First person questions" });
@@ -38,10 +42,10 @@ const otherPersonAnswersController = async (req, res, next) => {
         }).catch((err) => {
             console.error(err);
             res.status(500).json({ success: false, msg: "Internal server error" });
-        });     
+    });     
 } 
 
-const formInformation = async (req,res,next) => {
+const formInformation = async (req, res, next) => {
     const ecn = req.body.ecn;
     Survey.findOne({ecn: ecn})
         .then((surveys) => {
@@ -52,8 +56,8 @@ const formInformation = async (req,res,next) => {
                answersPerson1,
                responsesOtherPerson
             }
-            res.status(200).send(response);
+                res.status(200).send(response);
         })
 }
 
-module.exports = { formInformation ,firstPersonAnswersController, otherPersonAnswersController };
+module.exports = { formInformation, firstPersonAnswersController, otherPersonAnswersController };

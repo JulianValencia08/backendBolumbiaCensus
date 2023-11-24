@@ -24,15 +24,11 @@ const SurveySchema = new Schema({
         type: Number, 
         required: true
     }, 
-    answersPerson1: {  
-        type: Object,
-        default: {}  
-    },
     ecn: {
         type: String,
         required: true
     },
-    responsesOtherPerson: [ PersonSchema ]
+    responses: [ PersonSchema ]
 });
 
 const Survey = moongose.model("Survey", SurveySchema);
